@@ -1,13 +1,13 @@
 from flask import Flask, render_template, jsonify, request
-# from dotenv.main import load_dotenv
+from dotenv.main import load_dotenv
 import google.generativeai as genai
 import os
 
-# load_dotenv() 
+load_dotenv() 
 
 # genai_api_key = os.environ.get('GENAI_API_KEY')
-# genai_api_key = os.getenv('GENAI_API_KEY')
-genai.configure(api_key="AIzaSyDYWttxnmorG9A4g4sdh1aHkLRMdvb2tn0")
+genai_api_key = os.getenv('GENAI_API_KEY')
+genai.configure(api_key=genai_api_key)
 model = genai.GenerativeModel('gemini-pro')
 
 app = Flask(__name__)
