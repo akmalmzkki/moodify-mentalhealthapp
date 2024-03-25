@@ -10,9 +10,6 @@ on:
       - main
   workflow_dispatch:
 
-env:
-  GENAI_API_KEY: ${{ vars.GENAI_API_KEY }}
-
 jobs:
   build:
     runs-on: ubuntu-latest
