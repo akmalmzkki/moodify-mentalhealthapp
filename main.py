@@ -5,8 +5,8 @@ import os
 
 load_dotenv() 
 
-# genai_api_key = os.environ.get('GENAI_API_KEY')
-genai_api_key = os.getenv('GENAI_API_KEY')
+genai_api_key = os.environ.get('GENAI_API_KEY')
+# genai_api_key = os.getenv('GENAI_API_KEY')
 genai.configure(api_key=genai_api_key)
 model = genai.GenerativeModel('gemini-pro')
 
@@ -59,4 +59,4 @@ def get_data():
         })
     
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True, port=5000, host='127.0.0.1')
