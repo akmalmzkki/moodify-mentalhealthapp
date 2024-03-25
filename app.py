@@ -1,14 +1,17 @@
 from flask import Flask, render_template, jsonify, request
 from dotenv.main import load_dotenv
-import google.generativeai as genai
+import openai
 import os
 
 load_dotenv() 
 
-genai_api_key = os.environ.get('GENAI_API_KEY')
-# genai_api_key = os.getenv('GENAI_API_KEY')
-genai.configure(api_key=genai_api_key)
-model = genai.GenerativeModel('gemini-pro')
+azureai_api_key = os.environ.get('AZURE_OPENAI_API_KEY')
+
+client = openai.AzureOpenAI(
+    azure_endpoint="https://moodifly-llms.openai.azure.com/", 
+    api_key=azureai_api_key,  
+    api_version="2024-02-15-preview"
+)
 
 app = Flask(__name__)
 
@@ -43,13 +46,27 @@ def get_data():
         Pertanyaan:
         Perintahnya adalah: {msg}.
     """
-
+    
+    message_text = [{
+        "role":"system",
+        "content":prompt_template.format(msg)
+    }]
 
     try:
-        response = model.generate_content(prompt_template.format(msg))
+        completion = client.chat.completions.create(
+            model="gpt-35-turbo", # model = "deployment_name"
+            messages=message_text,
+            temperature=0.7,
+            max_tokens=800,
+            top_p=0.95,
+            frequency_penalty=0,
+            presence_penalty=0,
+            stop=None
+        )
+        
         return jsonify({
             "response": True, 
-            "message": response.text
+            "message": completion.choices[0].message.content
         })
     except Exception as e:
         error_message = f'Error: {str(e)}'
