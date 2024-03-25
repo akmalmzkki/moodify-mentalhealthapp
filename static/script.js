@@ -1,4 +1,3 @@
-// for scrolling messages
 function scrollToBottom() {
     var div = $("#upperid");
     div.scrollTop(div.prop("scrollHeight"));
@@ -11,7 +10,6 @@ $("#userinputform").submit(function(event) {
     formsubmitted();
 });
 
-// sending request to python server
 const formsubmitted = async () => {
     let userinput = $('#userinput').val();
     let sendbtn = $('#sendbtn');
